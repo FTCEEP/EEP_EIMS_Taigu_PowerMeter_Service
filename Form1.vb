@@ -27,7 +27,7 @@
         Try
 
             Timer01.Text = CInt(Timer01.Text) + 1
-            System.Threading.Thread.Sleep(5100)
+            System.Threading.Thread.Sleep(6000)
             'BackgroundWorker1.RunWorkerAsync()
             'Timer1.Enabled = False
         Catch ex As Exception
