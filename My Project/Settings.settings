@@ -1,0 +1,30 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="My" GeneratedClassName="MySettings" UseMySettingsClassName="true">
+  <Profiles />
+  <Settings>
+    <Setting Name="EEP_EIMS_Taigu_PowerMeter_Service_Webservice_taigu_PowerMeterDatas" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">http://221.230.60.23:8000/taigu/services</Value>
+    </Setting>
+    <Setting Name="DBIP" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">127.0.0.1</Value>
+    </Setting>
+    <Setting Name="DBLoginID" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">sa</Value>
+    </Setting>
+    <Setting Name="DBLoginPassword" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">p@ssw0rd</Value>
+    </Setting>
+    <Setting Name="CheckSettingChange" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">10</Value>
+    </Setting>
+    <Setting Name="ScanDeviceInterval" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">1000</Value>
+    </Setting>
+    <Setting Name="DBErrorCount" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">10</Value>
+    </Setting>
+    <Setting Name="DBErrorReConnectCount" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">10</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>
