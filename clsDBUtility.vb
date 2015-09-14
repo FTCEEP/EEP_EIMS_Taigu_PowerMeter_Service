@@ -299,10 +299,26 @@ Public Class clsDBUtility
             logger.Error("[Update_EEP_Points_LastDayReportTime Error]" & ex.ToString)
         End Try
     End Function
+
+    Public Function DeleteRawData(ByVal LastUpdateTime As DateTime) As Boolean
+        Try
+            DeleteRawData = False
+            Dim sSql2 As String
+            sSql2 = "delete BwAnalogTable where RecTime>='" & LastUpdateTime.ToString("yyyy-MM-dd") & _
+                    "' and RecTime<'" & LastUpdateTime.AddDays(1).ToString("yyyy-MM-dd") & "'"
+            ExecSQLNonQuery(sSql2)
+            DeleteRawData = True
+        Catch ex As Exception
+            iDBErrorCount = iDBErrorCount + 1
+            logger.Error("[DeleteRawData Error]" & ex.ToString)
+        End Try
+    End Function
     Public Function InsertRawData(ByVal oPowerMeterDatas As PowerMeterDatas, ByVal odbEEP_Points As dbEEP_Points) As Boolean
         Try
-            InsertRawData = False
+            InsertRawData = True
             Dim sSql2 As String
+
+         
 
             sSql2 = "insert into BwAnalogTable(TagName,RecTime,MaxValue) values('" & _
                     oPowerMeterDatas.PMID & ".AA','" & oPowerMeterDatas.RECTIME & "','" & oPowerMeterDatas.AA & "')"
@@ -468,7 +484,7 @@ Public Class clsDBUtility
             Dim clsCalKWH As CalKWH
             Dim TagName As String
             Dim stTagName As New StringDictionary
-            Dim TagNameList As String
+            Dim TagNameList As String = ""
             sSql2 = "delete ElectricDayReport where RecTime>='" & LastUpdateTime.ToString("yyyy-MM-dd") & _
                    "' and RecTime<'" & LastUpdateTime.AddDays(1).ToString("yyyy-MM-dd") & "'"
             ExecSQLNonQuery(sSql2)
@@ -484,7 +500,7 @@ Public Class clsDBUtility
             End If
             For i = 0 To dt3.Rows.Count - 1
                 TagName = dt3.Rows(i)("TagName").ToString
-                If InStr(TagName, "KWH") > 0 Then
+                If InStr(TagName.ToUpper, "KWH") > 0 Then
                     If stTagName.ContainsKey(TagName) = False Then
                         stTagName.Add(TagName, TagName)
                         If TagNameList = "" Then
@@ -497,6 +513,10 @@ Public Class clsDBUtility
             Next
             If dt3.Rows.Count = 0 Then
                 glogger.Debug("[DayReport Start2] Can not find Data,LastUpdateTime=" & LastUpdateTime)
+                Return True
+            End If
+            If TagNameList = "" Then
+                glogger.Debug("[DayReport Start3] Can not find KWH Data,LastUpdateTime=" & LastUpdateTime)
                 Return True
             End If
             TagNameList = TagNameList.Replace(",", "','")

@@ -6,7 +6,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{5EEF9873-5B3B-4C06-9407-779CB5C17244}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <StartupObject>EEP_EIMS_Taigu_PowerMeter_Service.Form1</StartupObject>
+    <StartupObject>EEP_EIMS_Taigu_PowerMeter_Service.Service1</StartupObject>
     <RootNamespace>EEP_EIMS_Taigu_PowerMeter_Service</RootNamespace>
     <AssemblyName>EEP_EIMS_Taigu_PowerMeter_Service</AssemblyName>
     <FileAlignment>512</FileAlignment>

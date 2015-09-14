@@ -140,8 +140,10 @@ Module Utility
             For Each Key In gdbEEP_Points.Keys
                 odbEEP_Points = gdbEEP_Points(Key)
              
-                Get_Taigu_PowerMeter(odbEEP_Points)
-                Get_Taigu_PowerMeter_All(odbEEP_Points)
+                'Get_Taigu_PowerMeter(odbEEP_Points)
+                If odbEEP_Points.LoginCID <> "" Then
+                    Get_Taigu_PowerMeter_All(odbEEP_Points)
+                End If
                 DayReport(odbEEP_Points)
             Next
         Catch ex As Exception
@@ -318,6 +320,10 @@ Module Utility
             If mclsDBUtility.OpenDB = True Then
                 sStartDay = odbEEP_Points.LastGetAllDataTime.ToString("yyyyMMddHHmm00") '"20140807070000"
                 glogger.Debug("[Get_Taigu_PowerMeter_All Start] CompanyName=" & odbEEP_Points.CompanyName & ",CID=" & odbEEP_Points.LoginCID & ",sStartDay=" & sStartDay)
+                If odbEEP_Points.LastGetAllDataTime.ToString("HH:mm") = "00:00" Then
+                    mclsDBUtility.DeleteRawData(odbEEP_Points.LastGetAllDataTime)
+                End If
+
                 Result = ws.GetPowerMeterDatas(odbEEP_Points.LoginCID, odbEEP_Points.LoginUser, odbEEP_Points.LoginPW, sStartDay)
                 Dim oP As clsPowerMeter
                 oP = JsonConvert.DeserializeObject(Of clsPowerMeter)(Result)
@@ -339,7 +345,10 @@ Module Utility
                     gdbEEP_Points(odbEEP_Points.CompanyID).LastGetAllDataTime = odbEEP_Points.LastGetAllDataTime.AddMinutes(15)
                     gclsDBUtility.Update_EEP_Points_LastGetAllDataTime(odbEEP_Points)
                     glogger.Debug("[Get_Taigu_PowerMeter_All End] CompanyName=" & odbEEP_Points.CompanyName & ",CID=" & odbEEP_Points.LoginCID & ",sStartDay=" & sStartDay)
-
+                Else
+                    glogger.Debug("[Get_Taigu_PowerMeter_All Read Data Null code=0] CompanyName=" & odbEEP_Points.CompanyName & ",CID=" & odbEEP_Points.LoginCID & ",sStartDay=" & sStartDay)
+                    gdbEEP_Points(odbEEP_Points.CompanyID).LastGetAllDataTime = odbEEP_Points.LastGetAllDataTime.AddMinutes(15)
+                    gclsDBUtility.Update_EEP_Points_LastGetAllDataTime(odbEEP_Points)
                 End If
                 mclsDBUtility = Nothing
             Else
@@ -347,7 +356,7 @@ Module Utility
             End If
 
         Catch ex As Exception
-            glogger.Error("[Get_Taigu_PowerMeter_All]Error=" & ex.Message)
+            glogger.Error("[Get_Taigu_PowerMeter_All]Error=" & ex.ToString)
         End Try
     End Sub
     Private Function ConvertJson(ByVal sJson As String) As clsPowerMeter
